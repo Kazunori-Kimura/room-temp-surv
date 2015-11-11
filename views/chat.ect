@@ -1,0 +1,15 @@
+<% extend 'views/layout.ect' %>
+
+
+<form class="form-inline">
+  <div class="form-group">
+    <label for="txtMessage">メッセージ</label>
+    <input type="text" class="form-control" id="txtMessage">
+  </div>
+  <button class="btn btn-primary" id="btnSend">送 信</button>
+</form>
+
+<div class="panel panel-default">
+  <div class="panel-heading">WebSocket Response</div>
+  <div class="panel-body" id="response"></div>
+</div>
