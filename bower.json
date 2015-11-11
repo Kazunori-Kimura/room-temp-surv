@@ -1,0 +1,28 @@
+{
+  "name": "room-temp-surv",
+  "description": "room temperature survey application.",
+  "main": "app.js",
+  "authors": [
+    "kazunori.kimura.js@gmail.com"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "koa",
+    "websocket"
+  ],
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}
