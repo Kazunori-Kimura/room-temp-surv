@@ -1,35 +1,47 @@
 <% extend 'views/layout.ect' %>
 
-<div class="row">
+<div class="row" data-bind="visible: !user.isLogin()">
   <form class="form-inline" id="login-form">
     <div class="form-group">
       <label for="username">お名前</label>
-      <input type="text" class="form-control" id="username" placeholder="User Name">
+      <input type="text" class="form-control" id="username" placeholder="User Name"
+        data-bind="value: user.username">
     </div>
-    <button class="btn btn-primary" id="login">ログイン</button>
+    <button class="btn btn-primary" id="login"
+      data-bind="click: user.login">ログイン</button>
   </form>
 </div>
-<div class="row">
+<div class="row" data-bind="visible: user.isLogin()">
   <form class="form-inline" id="login-form">
     <div class="form-group">
-      <label>お名前</label>
-      <p class="form-control-static"></p>
+      <p class="form-control-static">ようこそ <span data-bind="text: user.username"></span> さん！</p>
     </div>
-    <button class="btn btn-default" id="logout">ログアウト</button>
+    <button class="btn btn-xs btn-default" id="logout"
+      data-bind="click: user.logout">ログアウト</button>
   </form>
 </div>
-<div class="row">
+<div class="row" data-bind="visible: user.isLogin()">
   <form class="form-inline" id="chat-form">
     <div class="form-group">
       <label for="message">メッセージ</label>
-      <input type="text" class="form-control" id="message" placeholder="Message">
+      <input type="text" class="form-control" id="message" placeholder="Message"
+        data-bind="value: message.message">
     </div>
-    <button class="btn btn-primary" id="send">送 信</button>
+    <button class="btn btn-primary" id="send"
+      data-bind="click: send">送 信</button>
   </form>
 </div>
-<div class="row">
+<div class="row" data-bind="visible: user.isLogin()">
   <div class="panel panel-default">
     <div class="panel-heading">チャットルーム</div>
-    <div class="panel-body" id="response"></div>
+    <div class="panel-body" id="response">
+      <table class="table" data-bind="foreach: messageList">
+        <tr>
+          <td class="col-xs-1" data-bind="text: date"></td>
+          <td class="col-xs-1" data-bind="text: username"></td>
+          <td class="col-xs-10" data-bind="text: message"></td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>

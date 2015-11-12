@@ -11,6 +11,14 @@ app.use(views(__dirname + '/views', {
   }
 }));
 
+// GET /chat
+app.use(route.get('/chat', function *version(){
+  yield this.render('chat.ect', {
+    title: 'CHAT',
+    version: '1.0.0'
+  });
+}));
+
 // GET /version
 app.use(route.get('/version', function *version(){
   yield this.render('version.ect', {
