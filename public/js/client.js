@@ -1,24 +1,28 @@
 // client.js
-var User = function User(){
+
+// user model
+var User = function User(chat){
   var self = this;
 
   self.username = ko.observable('');
   self.isLogin = ko.observable(false);
 
   self.login = function(){
-    console.log('login: %s', self.username());
-    // TODO: 接続処理
+    // 接続処理
     self.isLogin(true);
+    chat.login(self.username());
   };
 
   self.logout = function(){
-    console.log('logout: %s', self.username());
-    // TODO: 切断処理
+    // 切断処理
+    chat.logout(self.username());
     self.isLogin(false);
+    self.username('');
   };
 };
 
-var Message = function Message(prm){
+// message model
+var Message = function Message(prm, chat){
   var self = this;
 
   var opts = {
@@ -36,24 +40,64 @@ var Message = function Message(prm){
   self.message = ko.observable(opts.message);
 
   self.send = function(){
-    console.log('send: %s > %s', self.username, self.message());
-    // TODO: メッセージ送信
-    self.message('');
+    if (chat) {
+      // メッセージ送信
+      chat.send({ message: self.message() });
+      self.message('');
+    }
   };
 };
 
+// Chat class
+var Chat = function Chat(messageList){
+  var self = this;
+  var socket = io.connect();
+
+  socket.on('connect', function(){
+    console.log('connect');
+  });
+  socket.on('disconnect', function(){
+    console.log('disconnect');
+  });
+
+  self.login = function(username){
+    socket.emit('login', { username: username });
+
+    socket.on('message', function(data){
+      console.log(data);
+      messageList.push(new Message({
+        date: data.date,
+        username: data.username,
+        message: data.message
+      }));
+    });
+  };
+
+  self.send = function(msg) {
+    socket.emit('message', msg);
+  };
+
+  self.logout = function(username) {
+    socket.emit('logout', { username: username });
+    socket.off('message');
+  };
+};
+
+// application view model
 var AppViewModel = function AppViewModel(){
   var self = this;
-
-  self.user = new User();
-  self.message = new Message();
+  // 受信したメッセージ
   self.messageList = ko.observableArray([]);
+  // socket.ioのラッパー
+  var chat = new Chat(self.messageList);
+  // models
+  self.user = new User(chat);
+  self.message = new Message({}, chat);
 
+  // 送信
   self.send = function(){
-    self.message.date = new Date();
-    self.message.username = self.user.username();
     self.message.send();
-  }
+  };
 };
 
 

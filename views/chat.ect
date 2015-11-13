@@ -35,13 +35,11 @@
   <div class="panel panel-default">
     <div class="panel-heading">チャットルーム</div>
     <div class="panel-body" id="response">
-      <table class="table" data-bind="foreach: messageList">
-        <tr>
-          <td class="col-xs-1" data-bind="text: date"></td>
-          <td class="col-xs-1" data-bind="text: username"></td>
-          <td class="col-xs-10" data-bind="text: message"></td>
-        </tr>
-      </table>
+      <div class="row" data-bind="foreach: messageList">
+        <div class="col-xs-1" data-bind="text: date"></div>
+        <div class="col-xs-1" data-bind="text: username"></div>
+        <div class="col-xs-10" data-bind="text: message"></div>
+      </div>
     </div>
   </div>
 </div>
